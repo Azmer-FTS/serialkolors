@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Serial Kolors · Questionnaire site internet</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0A0A0B">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0B; --surface:#141416; --surface2:#1B1B1E; --line:#2A2A2F;
+  --text:#FFFFFF; --muted:#9A9AA2; --soft:#E0E0E0;
+  --blue:#3B5BAA; --violet:#6B2C8E;
+  --grad:linear-gradient(120deg,var(--blue),var(--violet));
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--text)}
+body{font-family:Inter,system-ui,sans-serif;font-size:16px;line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(120% 60% at 50% -10%,rgba(59,91,170,.28),rgba(107,44,142,.16) 45%,transparent 75%) no-repeat,var(--bg)}
+html[dir=rtl] body{font-family:Heebo,Inter,system-ui,sans-serif}
+.wrap{max-width:640px;margin:0 auto;padding:20px 20px 140px}
+header{display:flex;align-items:center;justify-content:space-between;padding:6px 0 26px}
+header svg{width:58px;height:auto;display:block}
+.lang{display:flex;gap:4px;background:var(--surface);border-radius:999px;padding:4px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.lang button{border:0;background:none;color:var(--muted);font:500 13px 'JetBrains Mono',monospace;padding:7px 12px;border-radius:999px;cursor:pointer}
+.lang button.on{background:var(--grad);color:#fff}
+.mono{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.progress{height:3px;background:var(--line);border-radius:3px;overflow:hidden;margin:10px 0 28px}
+.progress i{display:block;height:100%;width:0;background:var(--grad);transition:width .35s ease}
+h1{font-size:30px;line-height:1.15;font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+h2{font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-.01em;margin-bottom:6px}
+.lead{color:var(--soft);font-size:17px}
+.sub{color:var(--muted);margin-bottom:26px}
+.step{display:none;animation:fade .3s ease}
+.step.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.q{background:var(--surface);border-radius:var(--radius);padding:20px;margin-bottom:18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.q>label,.q>.ql{display:block;font-weight:600;font-size:16px;margin-bottom:4px}
+.q .hint{color:var(--muted);font-size:14px;margin-bottom:12px}
+.q>label+input,.q>label+textarea{margin-top:8px}
+.req{color:#8FA6FF}
+input[type=text],input[type=tel],input[type=email],input[type=url],textarea{width:100%;background:var(--surface2);border:1px solid var(--line);color:var(--text);
+  border-radius:12px;padding:14px;font:inherit;font-size:16px;outline:none;transition:border-color .2s}
+input:focus,textarea:focus{border-color:#6C7FD0}
+textarea{min-height:110px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{border:1px solid var(--line);background:var(--surface2);color:var(--soft);border-radius:999px;padding:10px 15px;font:inherit;font-size:15px;cursor:pointer;
+  transition:all .15s;user-select:none;-webkit-tap-highlight-color:transparent}
+.chip.on{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 6px 18px rgba(80,60,170,.35)}
+.reveal{margin-top:12px;display:none}
+.reveal.on{display:block}
+.soc{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.soc .row .chip{width:100%;text-align:start;border-radius:12px}
+.soc .row input{margin-top:8px;display:none}
+.soc .row.on input{display:block}
+.file{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px dashed #3A3A42;border-radius:12px;padding:14px;margin-top:10px;cursor:pointer}
+.file input{display:none}
+.file b{font-weight:500}
+.file span{color:var(--muted);font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file .ic{flex:none;width:36px;height:36px;border-radius:10px;background:var(--grad);display:grid;place-items:center;font-size:20px;line-height:1}
+.err{color:#FF8A8A;font-size:14px;margin-top:8px;display:none}
+.err.on{display:block}
+nav{position:fixed;left:0;right:0;bottom:0;padding:14px 20px calc(14px + env(safe-area-inset-bottom));
+  background:linear-gradient(to top,var(--bg) 70%,rgba(10,10,11,0));z-index:5}
+nav .in{max-width:640px;margin:0 auto;display:flex;gap:10px}
+.btn{flex:1;border:0;border-radius:14px;padding:16px;font:600 16px Inter,Heebo,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.btn.p{background:var(--grad);color:#fff;box-shadow:0 10px 26px rgba(80,60,170,.4)}
+.btn.s{background:var(--surface);color:var(--soft);flex:0 0 auto;padding:16px 20px}
+.btn:disabled{opacity:.6}
+.intro-list{list-style:none;margin:24px 0 0;display:grid;gap:10px}
+.intro-list li{background:var(--surface);border-radius:14px;padding:14px 16px;box-shadow:0 8px 24px rgba(0,0,0,.3);color:var(--soft)}
+.intro-list li b{color:#fff;font-weight:600}
+footer{color:var(--muted);font-size:13px;text-align:center;margin-top:40px}
+footer a{color:var(--soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <svg viewBox="0 0 79.21 57.18" aria-label="Serial Kolors"><path fill="#fff" d="M73.02 0h-8.3c-1.12 0-2.04.17-2.79.49-.75.33-1.470.91-2.110 1.76L29.34 45.28h11.61zM49.85 11.99h-8.3c-1.12 0-2.04.17-2.79.49-.75.33-1.47.91-2.11 1.76L14.67 45.27h11.61zM74.92 45.27h-8.3c-1.12 0-2.04-.17-2.79-.49-.75-.33-1.47-.91-2.11-1.76l-8.06-11.38 5.81-8.2 15.45 21.82ZM18.19 35.98h-8.3c-1.12 0-2.04.17-2.79.49-.75.33-1.47.91-2.11 1.76L0 45.28h11.61l6.58-9.29ZM61.01 21.28h8.3c1.12 0 2.040-.17 2.790-.49.75-.33 1.47-.91 2.11-1.76l4.99-7.05H67.59l-6.58 9.29ZM1.39 56.43H.85v-.54H.3v-1.08h1.08v.54h.54v.55h2.17v-.54h.54v-1.08h-.54v-.54h-2.7v-.54H.85v-.54H.3v-2.18h.54v-.54h.54v-.54h3.25v.54h.54v.54h.54v1.08H4.630v-.54h-.54v-.54H1.93v.54h-.54v1.1h.54v.54h2.71v.54h.54v.54h.54v2.17h-.54v.54h-.54v.53H1.39v-.54ZM12.33 55.9v1.07H6.91v-7.59h5.42v1.06H8v2.16h3.24v1.08H8v2.21h4.33ZM13.53 56.97v-7.59h4.34v.54h.54v.54h.54v2.17h-.54v.54h-.54v.53H16.8v.55h.54v.54h.54v.54h.54v.54h.54v1.08h-1.08v-.54h-.54v-.54h-.54v-.54h-.54v-.54h-.54v-.54h-.54v-.55h-.55v3.26h-1.08Zm1.08-4.34h2.71v-.53h.54v-1.08h-.54v-.54h-2.71v2.16ZM21.33 55.89v-5.42h-1.08v-1.08h3.24v1.08h-1.07v5.42h1.07v1.08h-3.24v-1.08zM24.65 56.97v-5.42h.53v-.54h.54v-.54h.54v-.54h.54v-.54h1.08v.54h.55v.54h.54v.54h.53v.54h.55v5.42h-1.1v-2.41H25.7v2.41h-1.07Zm1.07-3.47h3.26v-1.41h-.54v-.54h-.55v-.54h-1.08v.54h-.54v.54h-.54v1.41ZM36.35 55.9v1.07h-4.89v-7.59h1.08v6.52zM44.11 57.05h-2.17l-2.22-3.31c-.04-.06-.11-.2-.2-.42h-.03v3.73h-1.71v-7.61h1.71v3.6h.03q.06-.15.21-.42l2.1-3.17h2.04l-2.65 3.63 2.88 3.98ZM48.05 57.18c-1.09 0-1.98-.35-2.66-1.06-.69-.71-1.030-1.63-1.03-2.77 0-1.2.35-2.18 1.05-2.92s1.62-1.12 2.77-1.12c1.09 0 1.97.36 2.64 1.07s1.01 1.65 1.01 2.81-.35 2.16-1.04 2.89-1.6 1.1-2.72 1.1Zm.08-6.39c-.6 0-1.08.23-1.43.68s-.53 1.05-.53 1.79.18 1.35.53 1.79.82.66 1.39.66 1.06-.21 1.41-.64.52-1.02.52-1.78-.17-1.4-.5-1.84q-.51-.66-1.38-.66ZM57.62 57.05h-4.53v-7.61h1.71v6.22h2.82zM61.86 57.18c-1.09 0-1.98-.35-2.66-1.06-.69-.71-1.03-1.63-1.03-2.77 0-1.2.35-2.18 1.05-2.92s1.62-1.12 2.77-1.12c1.09 0 1.97.36 2.64 1.07s1.01 1.65 1.01 2.81-.35 2.16-1.04 2.89-1.6 1.1-2.72 1.1Zm.07-6.39c-.6 0-1.08.23-1.43.68s-.53 1.05-.53 1.79.18 1.35.53 1.79.82.66 1.39.66 1.06-.21 1.41-.64.52-1.020.52-1.78-.17-1.4-.5-1.84q-.51-.66-1.38-.66ZM73.27 57.05H71.3l-1.18-1.96c-.09-.15-.17-.28-.25-.4a1.5 1.5 0 0 0-.25-.3.9.9 0 0 0-.26-.19.7.7 0 0 0-.29-.07h-.46v2.91H66.9v-7.61h2.72c1.85 0 2.77.69 2.77 2.07 0 .27-.04.51-.12.74-.08.22-.2.43-.34.61-.15.18-.33.34-.54.47s-.44.23-.7.31v.02c.11.04.22.09.33.17s.21.17.31.28.19.22.28.34.17.24.25.36l1.44 2.25Zm-4.67-6.33v2.12h.74c.37 0 .66-.11.89-.32.23-.22.34-.48.34-.8 0-.67-.4-1-1.19-1h-.77ZM73.63 56.76v-1.7a3.21 3.21 0 0 0 2.09.77c.22 0 .4-.02.57-.06.16-.04.3-.09.4-.16q.165-.105.24-.24c.05-.09.08-.2.08-.31a.64.64 0 0 0-.13-.4c-.08-.12-.2-.22-.35-.32s-.32-.2-.52-.29-.42-.19-.65-.28c-.59-.25-1.04-.55-1.33-.91s-.44-.79-.44-1.29q0-.6.24-1.02c.16-.29.38-.52.65-.7s.59-.32.95-.41.74-.13 1.15-.13.75.02 1.050.07.59.12.85.22v1.59c-.13-.09-.27-.17-.42-.23-.15-.07-.31-.12-.46-.17-.16-.04-.32-.08-.48-.1a4 4 0 0 0-.45-.03c-.19 0-.37.02-.53.06s-.29.09-.4.16-.19.15-.25.24-.09.2-.09.32c0 .13.03.24.1.34s.16.2.29.29c.12.09.27.18.45.26q.27.135.6.27c.3.13.58.26.82.41.24.14.45.3.62.49s.31.39.4.62.14.5.14.81c0 .42-.08.78-.24 1.07s-.38.52-.66.7-.6.31-.96.38c-.37.08-.75.12-1.16.12s-.81-.04-1.190-.11-.7-.18-.98-.32Z"/></svg>
+    <div class="lang"><button type="button" data-l="fr" class="on">FR</button><button type="button" data-l="he">עב</button></div>
+  </header>
+
+  <form id="f" action="https://formsubmit.co/dov@serialkolors.com" method="POST" enctype="multipart/form-data" novalidate>
+    <input type="hidden" name="_subject" id="subj" value="Questionnaire site avocat">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" id="next" value="">
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+    <div id="hidden"></div>
+    <div id="steps"></div>
+  </form>
+  <footer>Serial Kolors · <a href="https://www.serialkolors.com" target="_blank" rel="noopener">serialkolors.com</a></footer>
+</div>
+
+<nav><div class="in">
+  <button type="button" class="btn s" id="back"></button>
+  <button type="button" class="btn p" id="next-btn"></button>
+</div></nav>
+
+<script>
+const T = {
+  fr:{start:"Commencer",next:"Suivant",back:"Retour",send:"Envoyer mes réponses",sending:"Envoi en cours…",step:"Étape",of:"sur",
+      required:"Merci de remplir les champs marqués *",tooBig:"Fichier trop lourd (10 Mo maximum). Vous pourrez nous l'envoyer par WhatsApp.",
+      choose:"Choisir un fichier",none:"Aucun fichier",other:"Précisez si besoin",url:"Collez le lien ici",multi:"Plusieurs choix possibles"},
+  he:{start:"מתחילים",next:"הבא",back:"חזרה",send:"שליחת התשובות",sending:"שולח…",step:"שלב",of:"מתוך",
+      required:"נא למלא את השדות המסומנים *",tooBig:"הקובץ גדול מדי (עד 10MB). אפשר לשלוח לנו אותו בוואטסאפ.",
+      choose:"בחירת קובץ",none:"לא נבחר קובץ",other:"פרטו במידת הצורך",url:"הדביקו כאן את הקישור",multi:"אפשר לבחור כמה אפשרויות"}
+};
+const o = (fr,he)=>({fr,he});
+
+const STEPS = [
+ {intro:true,
+  title:o("Votre futur site internet","האתר החדש שלכם"),
+  lead:o("Quelques questions pour bien comprendre votre cabinet et vous proposer un site qui vous ressemble.","כמה שאלות קצרות כדי להכיר את המשרד שלכם ולהציע אתר שמתאים לכם בדיוק."),
+  bullets:[o("<b>5 minutes</b>, surtout des choix à toucher","<b>5 דקות</b>, בעיקר בחירה בלחיצה"),
+           o("<b>Rien d'obligatoire</b> à part vos coordonnées","<b>שום דבר אינו חובה</b> מלבד פרטי הקשר"),
+           o("<b>Un doute ?</b> Choisissez « À discuter », on en parlera ensemble","<b>לא בטוחים?</b> בחרו \"נדבר על זה\" ונחליט יחד")]},
+ {title:o("Faisons connaissance","נעים להכיר"),sub:o("Pour vous recontacter.","כדי שנוכל לחזור אליכם."),q:[
+  {k:"Nom",t:"text",l:o("Nom et prénom","שם מלא"),req:1,ac:"name"},
+  {k:"Cabinet",t:"text",l:o("Nom du cabinet","שם המשרד"),ac:"organization"},
+  {k:"Téléphone / WhatsApp",t:"tel",l:o("Téléphone / WhatsApp","טלפון / וואטסאפ"),req:1,ac:"tel"},
+  {k:"email",t:"email",l:o("Email","אימייל"),ac:"email"},
+  {k:"Ville",t:"text",l:o("Ville du cabinet","עיר המשרד"),ac:"address-level2"}]},
+ {title:o("Votre activité","תחומי הפעילות"),sub:o("Touchez tout ce qui vous correspond.","סמנו כל מה שמתאים לכם."),q:[
+  {k:"Domaines d'intervention",t:"multi",l:o("Vos domaines d'intervention","תחומי ההתמחות שלכם"),other:1,opts:[
+    o("Droit de la famille","דיני משפחה"),o("Divorce et garde d'enfants","גירושין ומשמורת"),o("Successions et testaments","ירושות וצוואות"),
+    o("Immobilier","נדל\"ן ומקרקעין"),o("Droit des affaires et sociétés","דיני חברות ומסחרי"),o("Droit du travail","דיני עבודה"),
+    o("Droit pénal","משפט פלילי"),o("Dommages corporels et accidents","נזקי גוף ותאונות"),o("Droit fiscal","מיסים"),
+    o("Droit bancaire et recouvrement","בנקאות וגביית חובות"),o("Immigration et alyah","הגירה, אזרחות ועלייה"),o("Droit international","משפט בינלאומי"),
+    o("Propriété intellectuelle","קניין רוחני"),o("Médiation","גישור"),o("Notariat","נוטריון"),o("Litiges et contentieux","ליטיגציה"),o("Autre","אחר")]},
+  {k:"Clientèle",t:"multi",l:o("Vos clients","הלקוחות שלכם"),opts:[
+    o("Particuliers","לקוחות פרטיים"),o("Entreprises","חברות ועסקים"),o("Francophones","דוברי צרפתית"),o("Anglophones","דוברי אנגלית"),
+    o("Nouveaux immigrants","עולים חדשים"),o("Clients à l'étranger","לקוחות מחו\"ל")]},
+  {k:"Taille du cabinet",t:"single",l:o("Taille du cabinet","גודל המשרד"),opts:[o("Je travaille seul","עצמאי"),o("2 à 5 personnes","2 עד 5 אנשים"),o("Plus de 5 personnes","יותר מ-5 אנשים")]},
+  {k:"Langues du site",t:"multi",l:o("Langues du site","שפות האתר"),other:1,opts:[o("Hébreu","עברית"),o("Français","צרפתית"),o("Anglais","אנגלית"),o("Russe","רוסית"),o("Autre","אחר")]}]},
+ {title:o("Votre site","האתר"),sub:o("Ce que le site doit faire pour vous.","מה האתר צריך לעשות בשבילכם."),q:[
+  {k:"Site actuel",t:"single",l:o("Avez-vous déjà un site ?","יש לכם כבר אתר?"),opts:[o("Non, pas encore","עדיין לא"),o("Oui, à refaire","כן, צריך אתר חדש"),o("Oui, à améliorer","כן, צריך לשפר")],
+   reveal:{when:[1,2],k:"Adresse du site actuel",t:"url",ph:"url"}},
+  {k:"Objectifs",t:"multi",l:o("Vos objectifs","המטרות שלכם"),opts:[
+    o("Recevoir plus de demandes de clients","לקבל יותר פניות מלקוחות"),o("Être bien trouvé sur Google","להופיע גבוה בגוגל"),
+    o("Inspirer confiance et crédibilité","לשדר אמינות ומקצועיות"),o("Présenter clairement mes domaines","להציג בבירור את התחומים שלי"),
+    o("Prendre des rendez-vous en ligne","קביעת פגישות אונליין")]},
+  {k:"Pages souhaitées",t:"multi",l:o("Pages souhaitées","העמודים הרצויים"),hint:o("Les pages essentielles sont déjà cochées.","העמודים הבסיסיים כבר מסומנים."),pre:[0,1,2,3],opts:[
+    o("Accueil","דף הבית"),o("À propos du cabinet","אודות המשרד"),o("Domaines d'intervention","תחומי עיסוק"),o("Contact et plan d'accès","צור קשר ומפה"),
+    o("Une page par domaine","עמוד נפרד לכל תחום"),o("L'équipe","הצוות"),o("Articles et conseils juridiques","מאמרים וטיפים משפטיים"),
+    o("Questions fréquentes","שאלות נפוצות"),o("Avis clients","המלצות לקוחות"),o("Médias et publications","בתקשורת ופרסומים")]},
+  {k:"Nombre de pages",t:"single",l:o("Combien de pages environ ?","כמה עמודים בערך?"),opts:[o("Une seule page","עמוד אחד"),o("3 à 5","3 עד 5"),o("6 à 10","6 עד 10"),o("Plus de 10","יותר מ-10"),o("Conseillez-moi","תמליצו לי")]},
+  {k:"Fonctionnalités",t:"multi",l:o("Fonctions utiles","פונקציות שימושיות"),opts:[
+    o("Bouton WhatsApp","כפתור וואטסאפ"),o("Formulaire de contact","טופס יצירת קשר"),o("Prise de rendez-vous en ligne","קביעת פגישה אונליין"),
+    o("Paiement d'une consultation en ligne","תשלום על ייעוץ אונליין"),o("Avis Google affichés","הצגת ביקורות גוגל"),o("À discuter","נדבר על זה")]}]},
+ {title:o("Le style","הסגנון"),sub:o("L'image que vous voulez donner.","התדמית שאתם רוצים לשדר."),q:[
+  {k:"Style souhaité",t:"multi",l:o("Quelle ambiance ?","איזו אווירה?"),opts:[
+    o("Classique et sobre","קלאסי ומאופק"),o("Moderne et épuré","מודרני ונקי"),o("Chaleureux et proche","חם וקרוב"),o("Haut de gamme","יוקרתי"),o("Je vous laisse proposer","סומך עליכם")]},
+  {k:"Sites qui plaisent",t:"textarea",l:o("Des sites qui vous plaisent ?","אתרים שאהבתם?"),hint:o("Facultatif. Collez un ou deux liens, d'avocats ou non.","לא חובה. הדביקו קישור או שניים, של עורכי דין או לא.")}]},
+ {title:o("Votre image","המיתוג שלכם"),sub:o("Ce que vous avez déjà, pour partir de votre univers.","מה שכבר קיים, כדי לבנות על הבסיס שלכם."),q:[
+  {k:"Logo",t:"single",l:o("Avez-vous un logo ?","יש לכם לוגו?"),opts:[o("Oui","כן"),o("Oui, mais à moderniser","כן, אבל צריך לרענן"),o("Non, à créer","לא, צריך ליצור")]},
+  {k:"Couleurs",t:"single",l:o("Des couleurs déjà définies ?","יש צבעים קבועים?"),opts:[o("Oui","כן"),o("Non","לא"),o("Je ne sais pas","לא בטוח")]},
+  {k:"Photos",t:"single",l:o("Des photos de vous ou du cabinet ?","יש תמונות שלכם או של המשרד?"),opts:[o("Oui, des photos pro","כן, צילומים מקצועיים"),o("Quelques photos","יש כמה תמונות"),o("Non, une séance photo serait utile","לא, צריך צילומים")]},
+  {k:"Documents existants",t:"multi",l:o("Vos supports existants","חומרים קיימים"),opts:[
+    o("Cartes de visite","כרטיסי ביקור"),o("Plaquette ou brochure","חוברת או עלון"),o("Présentation PDF ou PowerPoint","מצגת PDF או PowerPoint"),
+    o("Papier à en-tête","נייר מכתבים"),o("Articles ou passages dans les médias","כתבות והופעות בתקשורת"),o("Rien pour l'instant","עדיין אין")]},
+  {k:"logo",t:"file",l:o("Envoyer votre logo","שליחת הלוגו"),hint:o("Facultatif. Image ou PDF.","לא חובה. תמונה או PDF.")},
+  {k:"document",t:"file",l:o("Envoyer une plaquette ou un document","שליחת עלון או מסמך"),hint:o("Facultatif. Vous pouvez aussi tout nous envoyer par WhatsApp.","לא חובה. אפשר גם לשלוח הכול בוואטסאפ.")}]},
+ {title:o("Vos réseaux","הרשתות החברתיות"),sub:o("Touchez ceux que vous utilisez et collez le lien de votre page.","סמנו את הרשתות שלכם והדביקו את הקישור לעמוד."),q:[
+  {k:"Réseaux",t:"social",opts:["Facebook","Instagram","LinkedIn","TikTok","YouTube",o("Fiche Google Business","עמוד Google Business"),o("Autre","אחר")]},
+  {k:"Sans réseaux",t:"multi",l:o("","" ),opts:[o("Je n'ai pas encore de réseaux sociaux","אין לי עדיין רשתות חברתיות")]}]},
+ {title:o("Aller plus loin","מעבר לאתר"),sub:o("Pour savoir ce qui pourrait vous intéresser.","כדי לדעת מה עוד יכול לעניין אתכם."),q:[
+  {k:"Vidéos",t:"single",l:o("Des vidéos ?","סרטונים?"),opts:[o("Une vidéo de présentation du cabinet","סרטון תדמית למשרד"),o("Des vidéos courtes pour les réseaux","סרטונים קצרים לרשתות"),o("Les deux","את שניהם"),o("Non","לא"),o("À discuter","נדבר על זה")]},
+  {k:"Posts réseaux sociaux",t:"single",l:o("Des campagnes de posts sur les réseaux ?","קמפיין פוסטים ברשתות?"),opts:[o("Oui, régulièrement","כן, באופן קבוע"),o("De temps en temps","מדי פעם"),o("Non","לא"),o("À discuter","נדבר על זה")]},
+  {k:"Publicité en ligne",t:"single",l:o("De la publicité Google ou Facebook ?","פרסום ממומן בגוגל או בפייסבוק?"),opts:[o("Oui","כן"),o("Non","לא"),o("À discuter","נדבר על זה")]},
+  {k:"Suivi du site",t:"single",l:o("Un suivi du site après la mise en ligne ?","ליווי ותחזוקה אחרי העלייה לאוויר?"),hint:o("Mises à jour, modifications, sécurité.","עדכונים, שינויים ואבטחה."),opts:[o("Oui","כן"),o("Non","לא"),o("À discuter","נדבר על זה")]}]},
+ {title:o("Pour finir","לסיום"),sub:o("Deux dernières questions.","עוד שתי שאלות אחרונות."),q:[
+  {k:"Délai",t:"single",l:o("Pour quand ?","מתי?"),opts:[o("Le plus vite possible","כמה שיותר מהר"),o("Dans 1 à 2 mois","בעוד חודש או חודשיים"),o("Pas d'urgence","אין לחץ")]},
+  {k:"Contact préféré",t:"single",l:o("Comment préférez-vous être contacté ?","איך נוח לכם שנחזור אליכם?"),opts:[o("WhatsApp","וואטסאפ"),o("Appel","שיחת טלפון"),o("Email","אימייל")]},
+  {k:"Message",t:"textarea",l:o("Autre chose à nous dire ?","משהו נוסף?"),hint:o("Facultatif.","לא חובה.")}]}
+];
+
+let lang = "fr", cur = 0;
+const state = {};           // key -> Set of option index (multi/single)
+const stepsEl = document.getElementById("steps");
+const L = v => typeof v === "string" ? v : v[lang];
+const FR = v => typeof v === "string" ? v : v.fr;
+
+function build(){
+  stepsEl.innerHTML = "";
+  STEPS.forEach((s,i)=>{
+    const d = document.createElement("section");
+    d.className = "step"+(i===cur?" on":"");
+    if(s.intro){
+      d.innerHTML = `<p class="mono">Serial Kolors</p><div style="height:14px"></div><h1>${L(s.title)}</h1><p class="lead">${L(s.lead)}</p>
+        <ul class="intro-list">${s.bullets.map(b=>`<li>${L(b)}</li>`).join("")}</ul>`;
+    } else {
+      d.innerHTML = `<p class="mono">${T[lang].step} ${i} ${T[lang].of} ${STEPS.length-1}</p><div class="progress"><i style="width:${i/(STEPS.length-1)*100}%"></i></div>
+        <h2>${L(s.title)}</h2><p class="sub">${L(s.sub)}</p>`;
+      s.q.forEach(q=>d.appendChild(question(q)));
+      d.insertAdjacentHTML("beforeend",`<p class="err" data-err>${T[lang].required}</p>`);
+    }
+    stepsEl.appendChild(d);
+  });
+  nav();
+}
+
+function question(q){
+  const box = document.createElement("div"); box.className="q";
+  const lab = q.l && L(q.l) ? `<label for="in-${slug(q.k)}">${L(q.l)}${q.req?' <span class="req">*</span>':''}</label>` : "";
+  const hint = q.hint ? `<p class="hint">${L(q.hint)}</p>` : (q.t==="multi"&&q.l&&L(q.l) ? `<p class="hint">${T[lang].multi}</p>`:"");
+  if(["text","tel","email"].includes(q.t)){
+    box.innerHTML = lab+hint;
+    const inp = keepInput(q.k,"input"); inp.type=q.t; inp.id="in-"+slug(q.k); if(q.ac) inp.autocomplete=q.ac;
+    if(q.t==="tel"){ inp.inputMode="tel"; inp.dir="ltr"; } if(q.t==="email") inp.dir="ltr"; if(q.req) inp.dataset.req=1;
+    box.appendChild(inp);
+  } else if(q.t==="textarea"){
+    box.innerHTML = lab+hint;
+    const ta = keepInput(q.k,"textarea"); ta.id="in-"+slug(q.k); box.appendChild(ta);
+  } else if(q.t==="multi"||q.t==="single"){
+    box.innerHTML = (lab?`<span class="ql">${L(q.l)}</span>`:"")+hint;
+    if(!state[q.k]) state[q.k]=new Set(q.pre||[]);
+    const wrap = document.createElement("div"); wrap.className="chips";
+    q.opts.forEach((op,idx)=>{
+      const c=document.createElement("button"); c.type="button"; c.className="chip"+(state[q.k].has(idx)?" on":""); c.textContent=L(op);
+      c.onclick=()=>{
+        const st=state[q.k];
+        if(q.t==="single"){ const had=st.has(idx); st.clear(); if(!had) st.add(idx); [...wrap.children].forEach((x,j)=>x.classList.toggle("on",st.has(j))); }
+        else { st.has(idx)?st.delete(idx):st.add(idx); c.classList.toggle("on"); }
+        syncReveal(q,box);
+      };
+      wrap.appendChild(c);
+    });
+    box.appendChild(wrap);
+    if(q.other){ const r=document.createElement("div"); r.className="reveal"; r.dataset.other=1;
+      const inp=keepInput(q.k+" (autre)","input"); inp.type="text"; inp.placeholder=T[lang].other; r.appendChild(inp); box.appendChild(r); }
+    if(q.reveal){ const r=document.createElement("div"); r.className="reveal"; r.dataset.rev=1;
+      const inp=keepInput(q.reveal.k,"input"); inp.type="url"; inp.inputMode="url"; inp.dir="ltr"; inp.placeholder=T[lang].url; r.appendChild(inp); box.appendChild(r); }
+    syncReveal(q,box);
+  } else if(q.t==="social"){
+    const list=document.createElement("div"); list.className="soc";
+    if(!state[q.k]) state[q.k]=new Set();
+    q.opts.forEach((op,idx)=>{
+      const row=document.createElement("div"); row.className="row"+(state[q.k].has(idx)?" on":"");
+      const c=document.createElement("button"); c.type="button"; c.className="chip"+(state[q.k].has(idx)?" on":""); c.textContent=L(op);
+      const inp=keepInput(FR(op),"input"); inp.type="url"; inp.inputMode="url"; inp.dir="ltr"; inp.placeholder=T[lang].url;
+      c.onclick=()=>{ const st=state[q.k]; st.has(idx)?st.delete(idx):st.add(idx); row.classList.toggle("on"); c.classList.toggle("on"); if(st.has(idx)) inp.focus(); };
+      row.append(c,inp); list.appendChild(row);
+    });
+    box.appendChild(list);
+  } else if(q.t==="file"){
+    box.innerHTML = `<span class="ql">${L(q.l)}</span>`+hint;
+    const lb=document.createElement("label"); lb.className="file";
+    const inp=keepInput(q.k,"input",true); inp.type="file"; inp.name=q.k; inp.accept="image/*,.pdf,.ppt,.pptx,.doc,.docx,.ai,.eps,.svg";
+    const nameSpan=document.createElement("span"); nameSpan.textContent=inp.files&&inp.files[0]?inp.files[0].name:T[lang].none;
+    inp.onchange=()=>{ const f=inp.files[0]; if(f&&f.size>10*1024*1024){ alert(T[lang].tooBig); inp.value=""; } nameSpan.textContent=inp.files[0]?inp.files[0].name:T[lang].none; };
+    const ic=document.createElement("div"); ic.className="ic"; ic.textContent="+";
+    const txt=document.createElement("div"); txt.style.minWidth="0"; const b=document.createElement("b"); b.textContent=T[lang].choose; b.style.display="block";
+    txt.append(b,nameSpan); lb.append(inp,ic,txt); box.appendChild(lb);
+  }
+  return box;
+}
+
+// keep typed values across language switches
+const inputs = {};
+function keepInput(k,tag,file){
+  if(inputs[k]) return inputs[k];
+  const el=document.createElement(tag); el.dataset.k=k; if(!file) el.dataset.field=1; inputs[k]=el; return el;
+}
+function syncReveal(q,box){
+  const st=state[q.k]; if(!st) return;
+  if(q.other){ const last=q.opts.length-1; box.querySelector("[data-other]").classList.toggle("on",st.has(last)); }
+  if(q.reveal){ box.querySelector("[data-rev]").classList.toggle("on",q.reveal.when.some(i=>st.has(i))); }
+}
+function slug(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^\w]+/g,"-").toLowerCase();}
+
+const back=document.getElementById("back"), nextBtn=document.getElementById("next-btn");
+function nav(){
+  back.textContent=T[lang].back; back.style.display=cur===0?"none":"";
+  nextBtn.textContent = cur===0?T[lang].start:(cur===STEPS.length-1?T[lang].send:T[lang].next);
+}
+function show(i){
+  cur=i; [...stepsEl.children].forEach((s,j)=>s.classList.toggle("on",j===i)); nav(); window.scrollTo({top:0,behavior:"smooth"});
+}
+function valid(){
+  const sec=stepsEl.children[cur]; let ok=true;
+  sec.querySelectorAll("[data-req]").forEach(el=>{ if(!el.value.trim()){ ok=false; el.style.borderColor="#FF8A8A"; } else el.style.borderColor=""; });
+  const e=sec.querySelector("[data-err]"); if(e) e.classList.toggle("on",!ok);
+  return ok;
+}
+back.onclick=()=>show(Math.max(0,cur-1));
+nextBtn.onclick=()=>{ if(!valid()) return; if(cur<STEPS.length-1) show(cur+1); else submit(); };
+
+function submit(){
+  const h=document.getElementById("hidden"); h.innerHTML="";
+  const add=(n,v)=>{ if(!v) return; const i=document.createElement("input"); i.type="hidden"; i.name=n; i.value=v; h.appendChild(i); };
+  add("Langue du formulaire", lang==="fr"?"Français":"Hébreu");
+  STEPS.forEach(s=>(s.q||[]).forEach(q=>{
+    if(["text","tel","email","textarea"].includes(q.t)) add(q.k, inputs[q.k].value.trim());
+    else if(q.t==="multi"||q.t==="single"){
+      add(q.k,[...state[q.k]||[]].sort((a,b)=>a-b).map(i=>FR(q.opts[i])).join(", "));
+      if(q.other && inputs[q.k+" (autre)"] && state[q.k].has(q.opts.length-1)) add(q.k+" (autre)", inputs[q.k+" (autre)"].value.trim());
+      if(q.reveal && q.reveal.when.some(i=>state[q.k].has(i))) add(q.reveal.k, inputs[q.reveal.k].value.trim());
+    } else if(q.t==="social"){
+      [...state[q.k]].sort((a,b)=>a-b).forEach(i=>{ const n=FR(q.opts[i]); add(n, inputs[n].value.trim()||"Oui (lien non fourni)"); });
+    }
+  }));
+  const name=inputs["Nom"].value.trim(), cab=inputs["Cabinet"].value.trim();
+  document.getElementById("subj").value="Questionnaire site avocat : "+name+(cab?" ("+cab+")":"");
+  document.getElementById("next").value=new URL("merci.html?l="+lang,location.href).href;
+  // file inputs live in the DOM with their names; move them inside the form if needed
+  nextBtn.disabled=true; nextBtn.textContent=T[lang].sending;
+  document.getElementById("f").submit();
+}
+
+document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{
+  lang=b.dataset.l; document.documentElement.lang=lang; document.documentElement.dir=lang==="he"?"rtl":"ltr";
+  document.querySelectorAll(".lang button").forEach(x=>x.classList.toggle("on",x===b));
+  document.title = lang==="he"?"Serial Kolors · שאלון לאתר":"Serial Kolors · Questionnaire site internet";
+  build();
+});
+build();
+</script>
+</body>
+</html>
